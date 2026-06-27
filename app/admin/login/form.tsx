@@ -7,24 +7,28 @@ async function loginAction(_prev: unknown, formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  const result = await signIn("credentials", {
-    email,
-    password,
-    redirect: false,
-  });
+  try {
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
 
-  if (result?.error) {
+    if (result?.error) {
+      return { error: "Invalid email or password" };
+    }
+
+    if (result?.ok) {
+      const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+      const callbackUrl = params.get("callbackUrl") || "/admin";
+      window.location.href = callbackUrl;
+      return { success: true };
+    }
+
     return { error: "Invalid email or password" };
+  } catch {
+    return { error: "Connection error. Please try again." };
   }
-
-  if (result?.ok) {
-    const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
-    const callbackUrl = params.get("callbackUrl") || "/admin";
-    window.location.href = callbackUrl;
-    return { success: true };
-  }
-
-  return { error: "Invalid email or password" };
 }
 
 export function LoginForm() {
