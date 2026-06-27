@@ -1,7 +1,10 @@
 import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { setSession } from "@/lib/auth/session";
+import { signToken } from "@/lib/auth/session";
 import { NextResponse } from "next/server";
+
+const COOKIE_NAME = "session";
+const MAX_AGE = 60 * 60 * 24;
 
 export async function POST(request: Request) {
   try {
@@ -31,16 +34,24 @@ export async function POST(request: Request) {
       data: { lastLoginAt: new Date() },
     });
 
-    await setSession({
+    const token = await signToken({
       id: String(user.id),
       name: user.name,
       email: user.email,
       role: user.role,
     });
 
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("[login] Error:", error);
+    const response = NextResponse.json({ success: true });
+    response.cookies.set(COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: MAX_AGE,
+      path: "/",
+    });
+
+    return response;
+  } catch {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

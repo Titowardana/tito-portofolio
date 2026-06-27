@@ -43,16 +43,8 @@ export async function getSession(): Promise<SessionPayload | null> {
   }
 }
 
-export async function setSession(payload: SessionPayload): Promise<void> {
-  const token = await signToken(payload);
-  const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: MAX_AGE,
-    path: "/",
-  });
+export async function setSession(payload: SessionPayload): Promise<string> {
+  return signToken(payload);
 }
 
 export async function clearSession(): Promise<void> {
