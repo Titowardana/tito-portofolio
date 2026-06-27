@@ -1,0 +1,29 @@
+.text-type {
+  display: inline-flex;
+  align-items: baseline;
+  min-height: 1.25em;
+  white-space: pre-wrap;
+}
+
+.text-type__content {
+  display: inline-block;
+}
+
+.text-type__cursor {
+  display: inline-block;
+  margin-left: 0.2rem;
+  color: #4cd7f6;
+  opacity: 1;
+  text-shadow: 0 0 14px rgba(76, 215, 246, 0.5);
+}
+
+.text-type__cursor--hidden {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-type__cursor {
+    opacity: 1 !important;
+    text-shadow: none;
+  }
+}

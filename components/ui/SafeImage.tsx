@@ -40,7 +40,6 @@ export default function SafeImage({
         width={!fill ? width : undefined}
         height={!fill ? height : undefined}
         onError={() => setHasError(true)}
-        unoptimized
       />
     </div>
   );

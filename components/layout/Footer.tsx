@@ -1,6 +1,7 @@
 import { GithubIcon, LinkedinIcon, EmailIcon, ArrowUpIcon } from "@/components/ui/Icons";
+import type { Profile } from "@/data/profile";
 
-export default function Footer() {
+export default function Footer({ profile }: { profile: Profile }) {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -12,40 +13,45 @@ export default function Footer() {
               href="#"
               className="font-heading text-xl font-bold text-text-primary transition-colors hover:text-primary"
             >
-              TitoPortfolio
+              {profile.shortName}
             </a>
             <p className="mt-2 text-sm text-text-secondary">
-              Full-Stack Developer & Cybersecurity Enthusiast
+              {profile.primaryRole} & {profile.secondaryRole}
             </p>
           </div>
 
           <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/titopamungkas"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-surface text-text-secondary transition-all hover:bg-primary hover:text-white"
-              aria-label="GitHub"
-            >
-              <GithubIcon size={18} />
-            </a>
-            <a
-              href="https://linkedin.com/in/titopamungkas"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-surface text-text-secondary transition-all hover:bg-primary hover:text-white"
-              aria-label="LinkedIn"
-            >
-              <LinkedinIcon size={18} />
-            </a>
-            {/* TODO: Ganti dengan alamat email yang sebenarnya */}
-            <a
-              href="mailto:tito@example.com"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-surface text-text-secondary transition-all hover:bg-primary hover:text-white"
-              aria-label="Email"
-            >
-              <EmailIcon size={18} />
-            </a>
+            {profile.github && (
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-surface text-text-secondary transition-all hover:bg-primary hover:text-white"
+                aria-label="GitHub"
+              >
+                <GithubIcon size={18} />
+              </a>
+            )}
+            {profile.linkedin && (
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-surface text-text-secondary transition-all hover:bg-primary hover:text-white"
+                aria-label="LinkedIn"
+              >
+                <LinkedinIcon size={18} />
+              </a>
+            )}
+            {profile.email && (
+              <a
+                href={`mailto:${profile.email}`}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-surface text-text-secondary transition-all hover:bg-primary hover:text-white"
+                aria-label="Email"
+              >
+                <EmailIcon size={18} />
+              </a>
+            )}
             <a
               href="#"
               className="flex h-10 w-10 items-center justify-center rounded-full bg-surface text-text-secondary transition-all hover:bg-primary hover:text-white"
@@ -57,7 +63,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-border/50 pt-6 text-center text-sm text-text-secondary">
-          <p>&copy; {currentYear} Tito Pamungkas Wardana. All rights reserved.</p>
+          <p>&copy; {currentYear} {profile.name}. All rights reserved.</p>
         </div>
       </div>
     </footer>

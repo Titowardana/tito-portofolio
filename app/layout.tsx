@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { cookies } from "next/headers";
+import { ThemeProvider } from "@/lib/theme-provider";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -26,17 +28,23 @@ export const metadata: Metadata = {
     "Portfolio pribadi Tito Pamungkas Wardana, mahasiswa Teknik Informatika, Full-Stack Developer, dan Cybersecurity Enthusiast.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const theme = cookieStore.get("theme")?.value === "light" ? "light" : "dark";
+
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetBrainsMono.variable}`}
+      className={`${theme === "light" ? "light" : ""} ${spaceGrotesk.variable} ${inter.variable} ${jetBrainsMono.variable}`}
+      suppressHydrationWarning
     >
-      <body className="font-body antialiased">{children}</body>
+      <body className="font-body antialiased">
+        <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
