@@ -1,33 +1,34 @@
 "use client";
 
 import { useActionState } from "react";
-import { signIn } from "next-auth/react";
 
 async function loginAction(_prev: unknown, formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
   try {
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
+    const res = await fetch("/api/auth/callback/credentials", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ email, password, csrfToken: "" }),
+      redirect: "manual",
     });
 
-    if (result?.error) {
-      return { error: "Invalid email or password" };
-    }
-
-    if (result?.ok) {
-      const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
-      const callbackUrl = params.get("callbackUrl") || "/admin";
-      window.location.href = callbackUrl;
+    if (res.ok || res.type === "opaqueredirect") {
+      const params = new URLSearchParams(
+        typeof window !== "undefined" ? window.location.search : ""
+      );
+      window.location.href = params.get("callbackUrl") || "/admin";
       return { success: true };
     }
 
-    return { error: "Invalid email or password" };
+    if (res.status === 401) {
+      return { error: "Invalid email or password" };
+    }
+
+    return { error: "Server error. Please try again later." };
   } catch {
-    return { error: "Connection error. Please try again." };
+    return { error: "Network error. Check your connection." };
   }
 }
 
