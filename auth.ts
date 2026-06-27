@@ -20,28 +20,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         const email = emailRaw.toLowerCase().trim();
 
-        const user = await prisma.adminUser.findUnique({ where: { email } });
+        try {
+          const user = await prisma.adminUser.findUnique({ where: { email } });
 
-        if (!user || !user.isActive) {
+          if (!user || !user.isActive) {
+            return null;
+          }
+
+          const valid = await compare(passwordRaw, user.passwordHash);
+          if (!valid) {
+            return null;
+          }
+
+          await prisma.adminUser.update({
+            where: { id: user.id },
+            data: { lastLoginAt: new Date() },
+          });
+
+          return {
+            id: String(user.id),
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          };
+        } catch {
+          console.error("[auth] Database error during authorize");
           return null;
         }
-
-        const valid = await compare(passwordRaw, user.passwordHash);
-        if (!valid) {
-          return null;
-        }
-
-        await prisma.adminUser.update({
-          where: { id: user.id },
-          data: { lastLoginAt: new Date() },
-        });
-
-        return {
-          id: String(user.id),
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        };
       },
     }),
   ],
