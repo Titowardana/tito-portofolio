@@ -1,12 +1,12 @@
-import { auth } from "@/auth";
+import { getSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { LoginForm } from "./form";
 
 export default async function AdminLoginPage() {
-  const session = await auth();
+  const session = await getSession();
 
-  if (session?.user?.role === "admin") {
+  if (session?.role === "admin") {
     redirect("/admin");
   }
 

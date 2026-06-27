@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import {
@@ -100,8 +100,8 @@ function QuickAction({ label, href, description }: { label: string; href: string
 }
 
 export default async function AdminDashboard() {
-  const [session, stats] = await Promise.all([auth(), getStats()]);
-  const userName = session?.user?.name ?? "Admin";
+  const [session, stats] = await Promise.all([getSession(), getStats()]);
+  const userName = session?.name ?? "Admin";
 
   const statCards = [
     {

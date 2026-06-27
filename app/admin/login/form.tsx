@@ -3,18 +3,13 @@
 import { useActionState } from "react";
 
 async function loginAction(_prev: unknown, formData: FormData) {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
   try {
-    const res = await fetch("/api/auth/callback/credentials", {
+    const res = await fetch("/api/auth/login", {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ email, password, csrfToken: "" }),
-      redirect: "manual",
+      body: formData,
     });
 
-    if (res.ok || res.type === "opaqueredirect") {
+    if (res.ok) {
       const params = new URLSearchParams(
         typeof window !== "undefined" ? window.location.search : ""
       );
@@ -22,13 +17,10 @@ async function loginAction(_prev: unknown, formData: FormData) {
       return { success: true };
     }
 
-    if (res.status === 401) {
-      return { error: "Invalid email or password" };
-    }
-
-    return { error: "Server error. Please try again later." };
+    const data = await res.json().catch(() => ({}));
+    return { error: (data as { error?: string }).error || "Login failed" };
   } catch {
-    return { error: "Network error. Check your connection." };
+    return { error: "Network error. Please try again." };
   }
 }
 

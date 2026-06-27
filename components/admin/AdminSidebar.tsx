@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
 import {
   IconDashboard, IconUser, IconInfo, IconCode, IconFolder,
   IconBriefcase, IconGraduation, IconAward,
@@ -133,7 +132,9 @@ export function AdminSidebar({
         <button
           onClick={() => {
             onMobileClose();
-            signOut({ callbackUrl: "/admin/login" });
+            fetch("/api/auth/logout", { method: "POST" }).then(() => {
+              window.location.href = "/admin/login";
+            });
           }}
           title={collapsed ? "Sign Out" : undefined}
           className={[
