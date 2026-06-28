@@ -1,6 +1,6 @@
-import { compare } from "bcryptjs";
 import { signToken } from "@/lib/auth/session";
 import { NextResponse } from "next/server";
+import { timingSafeEqual } from "node:crypto";
 
 const COOKIE_NAME = "session";
 const MAX_AGE = 60 * 60 * 24;
@@ -16,15 +16,20 @@ export async function POST(request: Request) {
     }
 
     const email = emailRaw.toLowerCase().trim();
-
     const envEmail = process.env.ADMIN_EMAIL?.toLowerCase().trim();
-    const envHash = process.env.ADMIN_PASSWORD_HASH;
+    const envPassword = process.env.ADMIN_PASSWORD;
 
-    if (email !== envEmail || !envHash) {
+    if (email !== envEmail || !envPassword) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
-    const valid = await compare(passwordRaw, envHash);
+    const input = Buffer.from(passwordRaw);
+    const stored = Buffer.from(envPassword);
+
+    let valid = false;
+    if (input.length === stored.length) {
+      valid = timingSafeEqual(input, stored);
+    }
 
     if (!valid) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
