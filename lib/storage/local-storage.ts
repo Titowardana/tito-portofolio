@@ -37,11 +37,13 @@ export async function saveUpload(
 
   const fileName = generateFileName() + config.ext;
 
-  if (process.env.VERCEL_BLOB_READ_WRITE_TOKEN) {
+  const blobToken = process.env.BLOB_READ_WRITE_TOKEN ?? process.env.VERCEL_BLOB_READ_WRITE_TOKEN;
+  if (blobToken) {
     const { put } = await import("@vercel/blob");
     const blob = await put(fileName, buffer, {
       contentType: mime,
       access: "public",
+      token: blobToken,
     });
     return blob.url;
   }
@@ -60,7 +62,8 @@ export async function saveUpload(
 }
 
 export async function deleteUpload(publicPath: string): Promise<void> {
-  if (process.env.VERCEL_BLOB_READ_WRITE_TOKEN && publicPath.startsWith("http")) {
+  const blobToken = process.env.BLOB_READ_WRITE_TOKEN ?? process.env.VERCEL_BLOB_READ_WRITE_TOKEN;
+  if (blobToken && publicPath.startsWith("http")) {
     try {
       const { del } = await import("@vercel/blob");
       await del(publicPath);
