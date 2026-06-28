@@ -1,5 +1,4 @@
 import { compare } from "bcryptjs";
-import { prisma } from "@/lib/prisma";
 import { signToken } from "@/lib/auth/session";
 import { NextResponse } from "next/server";
 
@@ -18,27 +17,24 @@ export async function POST(request: Request) {
 
     const email = emailRaw.toLowerCase().trim();
 
-    const user = await prisma.adminUser.findUnique({ where: { email } });
+    const envEmail = process.env.ADMIN_EMAIL?.toLowerCase().trim();
+    const envHash = process.env.ADMIN_PASSWORD_HASH;
 
-    if (!user || !user.isActive) {
+    if (email !== envEmail || !envHash) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
-    const valid = await compare(passwordRaw, user.passwordHash);
+    const valid = await compare(passwordRaw, envHash);
+
     if (!valid) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
-    await prisma.adminUser.update({
-      where: { id: user.id },
-      data: { lastLoginAt: new Date() },
-    });
-
     const token = await signToken({
-      id: String(user.id),
-      name: user.name,
-      email: user.email,
-      role: user.role,
+      id: "1",
+      name: process.env.ADMIN_NAME || "Admin",
+      email,
+      role: "admin",
     });
 
     const response = NextResponse.json({ success: true });

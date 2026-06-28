@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "25mb",
     },
   },
-  serverExternalPackages: ["@prisma/client", "bcryptjs"],
+  serverExternalPackages: ["@prisma/client"],
 };
 
 export default nextConfig;
