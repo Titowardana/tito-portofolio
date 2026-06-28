@@ -35,6 +35,17 @@ export async function saveUpload(
     throw new Error(`Unsupported MIME type: ${mime}`);
   }
 
+  const fileName = generateFileName() + config.ext;
+
+  if (process.env.VERCEL_BLOB_READ_WRITE_TOKEN) {
+    const { put } = await import("@vercel/blob");
+    const blob = await put(fileName, buffer, {
+      contentType: mime,
+      access: "public",
+    });
+    return blob.url;
+  }
+
   const publicDirPath = path.join(process.cwd(), "public");
   const uploadDir = path.join(publicDirPath, config.dir.slice(1));
 
@@ -42,7 +53,6 @@ export async function saveUpload(
     await mkdir(uploadDir, { recursive: true });
   }
 
-  const fileName = generateFileName() + config.ext;
   const filePath = path.join(uploadDir, fileName);
   await writeFile(filePath, buffer);
 
@@ -50,6 +60,16 @@ export async function saveUpload(
 }
 
 export async function deleteUpload(publicPath: string): Promise<void> {
+  if (process.env.VERCEL_BLOB_READ_WRITE_TOKEN && publicPath.startsWith("http")) {
+    try {
+      const { del } = await import("@vercel/blob");
+      await del(publicPath);
+    } catch {
+      // ignore delete errors
+    }
+    return;
+  }
+
   if (!publicPath.startsWith("/uploads/")) return;
 
   const allowed = ALLOWED_UPLOAD_DIRS.some((dir) =>
