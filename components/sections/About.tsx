@@ -75,7 +75,7 @@ export default function About({
   return (
     <section
       id="about"
-      className="relative border-t border-border bg-[var(--background-dark)] overflow-hidden scroll-mt-24"
+      className="relative border-t border-border overflow-hidden scroll-mt-24"
     >
       {/* Subtle ambient — reduced opacity */}
       <div aria-hidden className="pointer-events-none absolute -top-40 left-1/3 h-[500px] w-[500px] rounded-full bg-blue-600/[0.04] blur-[140px]" />
@@ -94,7 +94,7 @@ export default function About({
             variants={fadeRight(0.05)}
             className="order-first lg:order-last flex flex-col gap-6"
           >
-            <div className="relative flex w-full h-[480px] sm:h-[560px] lg:h-[640px] xl:h-[720px] items-center justify-center rounded-2xl bg-surface/15">
+            <div className="relative flex w-full h-[480px] sm:h-[560px] lg:h-[640px] xl:h-[720px] items-center justify-center rounded-2xl bg-[#0a1530]">
               {/* Very subtle ambient — no colored glow */}
               <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 h-[55%] w-[55%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-surface-light/30 blur-[120px]" />
               <div className="absolute inset-0 z-10 overflow-visible">
@@ -112,16 +112,16 @@ export default function About({
               className="flex flex-wrap justify-center gap-x-6 gap-y-2"
             >
               {[
-                { icon: "📍", text: "Tanjungpinang, ID" },
-                { icon: "💼", text: "Open to Work" },
-                { icon: "🔐", text: "Cybersecurity Enthusiast" },
+                { icon: <svg key="pin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>, text: "Tanjungpinang, ID" },
+                { icon: <svg key="briefcase" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>, text: "Open to Work" },
+                { icon: <svg key="code" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>, text: "Full-Stack Developer" },
               ].map((item) => (
                 <motion.span
                   key={item.text}
                   variants={popIn}
                   className="flex items-center gap-1.5 text-xs text-text-muted"
                 >
-                  <span aria-hidden>{item.icon}</span>
+                  <span aria-hidden className="shrink-0 text-text-muted">{item.icon}</span>
                   {item.text}
                 </motion.span>
               ))}

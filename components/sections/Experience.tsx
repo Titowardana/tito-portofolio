@@ -287,7 +287,7 @@ export default function Experience({ experiences }: { experiences: ExperienceTyp
     .sort((a, b) => a.order - b.order);
 
   return (
-    <section id="experience" className="relative border-t border-border bg-[var(--background-dark)] scroll-mt-24">
+    <section id="experience" className="relative border-t border-border scroll-mt-24">
       <div aria-hidden className="pointer-events-none absolute right-0 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-surface-light/20 blur-[120px]" />
 
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28 relative z-10">

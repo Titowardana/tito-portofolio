@@ -12,5 +12,5 @@ export interface Certificate {
   order: number;
 }
 
-// TODO: Isi data sertifikat setelah diverifikasi
-export const certificates: Certificate[] = [];
+export const certificates: Certificate[] = [
+];

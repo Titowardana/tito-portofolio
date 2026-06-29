@@ -24,7 +24,7 @@ export default function Contact({ profile }: { profile: Profile }) {
   };
 
   return (
-    <section id="contact" className="relative border-t border-border/50 bg-[var(--background-dark)] overflow-hidden scroll-mt-24">
+    <section id="contact" className="relative border-t border-border/50 overflow-hidden scroll-mt-24">
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="h-[500px] w-[500px] rounded-full bg-primary/5 blur-[120px]" />
       </div>

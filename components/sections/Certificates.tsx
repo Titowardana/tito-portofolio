@@ -47,7 +47,7 @@ export default function Certificates({ certificates }: { certificates: Certifica
   return (
     <section
       id="certificates"
-      className="relative border-t border-border bg-[var(--background-dark)] scroll-mt-24"
+      className="relative border-t border-border scroll-mt-24"
     >
       <div
         aria-hidden

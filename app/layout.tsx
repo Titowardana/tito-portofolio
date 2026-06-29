@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import { ThemeProvider } from "@/lib/theme-provider";
+import BackgroundDecorations from "@/components/effects/BackgroundDecorations";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -43,7 +44,10 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="font-body antialiased">
-        <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
+        <ThemeProvider initialTheme={theme}>
+          <BackgroundDecorations />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
