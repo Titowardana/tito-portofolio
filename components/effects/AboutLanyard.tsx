@@ -7,6 +7,15 @@ import './Lanyard.css';
 
 export default function AboutLanyard({ reducedMotion, frontImage }: { reducedMotion: boolean; frontImage?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLight, setIsLight] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsLight(document.documentElement.classList.contains("light"));
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
   const isInView     = useInView(containerRef, { once: true, amount: 0.05 });
   const [shouldRender, setShouldRender] = useState(false);
   const [contextLost, setContextLost]   = useState(false);
@@ -71,6 +80,7 @@ export default function AboutLanyard({ reducedMotion, frontImage }: { reducedMot
             frontImage={frontImage || "/images/profile/tito-profile.jpeg"}
             backImage={DEFAULT_BACK}
             imageFit="cover"
+            isLight={isLight}
             onContextLost={() => setContextLost(true)}
           />
         </motion.div>

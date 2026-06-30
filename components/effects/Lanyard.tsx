@@ -26,6 +26,7 @@ export interface LanyardProps {
   frontImage?:   string | null;
   backImage?:    string | null;
   imageFit?:     'cover' | 'contain';
+  isLight?:      boolean;
   onContextLost?: () => void;
 }
 
@@ -300,6 +301,7 @@ export default function Lanyard({
   frontImage    = null,
   backImage     = null,
   imageFit      = 'cover',
+  isLight       = false,
   onContextLost = undefined,
 }: LanyardProps) {
   const [isMobile, setIsMobile] = useState<boolean>(
@@ -329,7 +331,7 @@ export default function Lanyard({
           stencil:         false,
         }}
         onCreated={({ gl }) => {
-          gl.setClearColor(new THREE.Color(0x0c1324), 0);
+          gl.setClearColor(isLight ? new THREE.Color(0xeef1f6) : new THREE.Color(0x0c1324), 0);
           gl.domElement.style.background = 'transparent';
           gl.domElement.addEventListener('webglcontextlost', (e) => {
             e.preventDefault();

@@ -94,7 +94,7 @@ export default function About({
             variants={fadeRight(0.05)}
             className="order-first lg:order-last flex flex-col gap-6"
           >
-            <div className="relative flex w-full h-[320px] sm:h-[480px] lg:h-[640px] xl:h-[720px] items-center justify-center rounded-2xl bg-[#0a1530]">
+            <div className="relative flex w-full h-[320px] sm:h-[480px] lg:h-[640px] xl:h-[720px] items-center justify-center rounded-2xl bg-[var(--background)]">
               {/* Very subtle ambient — no colored glow */}
               <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 h-[55%] w-[55%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-surface-light/30 blur-[120px]" />
               <div className="absolute inset-0 z-10 overflow-visible">
