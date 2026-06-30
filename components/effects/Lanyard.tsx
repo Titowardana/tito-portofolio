@@ -103,19 +103,20 @@ function Band({
     const W = baseImg.width;
     const H = baseImg.height;
 
+    const scale = 2;
     const canvas = document.createElement('canvas');
-    canvas.width  = W;
-    canvas.height = H;
+    canvas.width  = W * scale;
+    canvas.height = H * scale;
     const ctx = canvas.getContext('2d');
     if (!ctx) return baseMap;
 
-    ctx.drawImage(baseImg, 0, 0, W, H);
+    ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
 
     const drawFitted = (img: CanvasImageSource, rect: { x: number; y: number; w: number; h: number }) => {
-      const rx = rect.x * W;
-      const ry = rect.y * H;
-      const rw = rect.w * W;
-      const rh = rect.h * H;
+      const rx = rect.x * canvas.width;
+      const ry = rect.y * canvas.height;
+      const rw = rect.w * canvas.width;
+      const rh = rect.h * canvas.height;
       const pick = imageFit === 'contain' ? Math.min : Math.max;
       const scale = pick(rw / (img as HTMLImageElement).width, rh / (img as HTMLImageElement).height);
       const dw = (img as HTMLImageElement).width  * scale;
@@ -140,7 +141,7 @@ function Band({
     const composite = new THREE.CanvasTexture(canvas);
     composite.colorSpace  = THREE.SRGBColorSpace;
     composite.flipY       = baseMap.flipY;
-    composite.anisotropy  = 8;
+    composite.anisotropy  = 16;
     composite.needsUpdate = true;
     return composite;
   }, [backImage, imageFit, frontTex, backTex, baseMaterial]);
@@ -313,7 +314,7 @@ export default function Lanyard({
 
   const camPos: [number, number, number] = isMobile ? [0, 0, 16] : [0, 0, 22];
   const timeStep      = isMobile ? 1 / 30 : 1 / 60;
-  const maxDpr        = isMobile ? 1.25 : 1.5;
+  const maxDpr        = isMobile ? 2 : 2;
 
   return (
     <div className="lanyard-wrapper relative z-0 h-full w-full">

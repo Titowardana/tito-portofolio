@@ -77,7 +77,7 @@ export default function Contact({ profile }: { profile: Profile }) {
 
         <motion.div 
           initial="hidden" whileInView="visible" viewport={viewport} variants={stagger}
-          className="mt-8 flex items-center justify-center gap-6"
+          className="mt-8 flex items-center justify-center gap-6 flex-wrap"
         >
           {profile.github && (
             <motion.a

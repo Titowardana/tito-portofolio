@@ -234,7 +234,7 @@ export default function Hero({ profile }: { profile: Profile }) {
       ref={sectionRef}
       className="relative overflow-hidden bg-grid"
       style={{
-        minHeight: "calc(100svh - 0px)",
+        minHeight: "calc(100svh - 80px)",
       }}
     >
       {/* Layer 0: SplashCursor background */}
@@ -242,7 +242,7 @@ export default function Hero({ profile }: { profile: Profile }) {
 
       {/* Layer 1: Background — very subtle, no colored glow */}
       <div
-        className="pointer-events-none absolute -top-24 right-0 h-[400px] w-[500px] rounded-full bg-primary/4 blur-[160px]"
+        className="pointer-events-none absolute -top-24 right-0 h-[400px] w-[300px] rounded-full bg-primary/4 blur-[160px] sm:w-[500px]"
         aria-hidden="true"
       />
 
@@ -380,7 +380,7 @@ export default function Hero({ profile }: { profile: Profile }) {
               }}
               whileHover={reducedMotion ? {} : "hover"}
               whileTap={reducedMotion ? {} : "tap"}
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover sm:w-auto focus-visible:outline-2 focus-visible:outline-primary"
+              className="group inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-lg bg-primary px-6 sm:px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover sm:w-auto focus-visible:outline-2 focus-visible:outline-primary"
             >
               View Projects
               <motion.span
@@ -399,7 +399,7 @@ export default function Hero({ profile }: { profile: Profile }) {
               }}
               whileHover={reducedMotion ? {} : "hover"}
               whileTap={reducedMotion ? {} : "tap"}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-secondary/30 bg-secondary/8 px-8 py-3.5 text-sm font-semibold text-secondary transition-colors hover:border-secondary/60 hover:bg-secondary/15 sm:w-auto focus-visible:outline-2 focus-visible:outline-secondary"
+              className="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-lg border border-secondary/30 bg-secondary/8 px-6 sm:px-8 py-3.5 text-sm font-semibold text-secondary transition-colors hover:border-secondary/60 hover:bg-secondary/15 sm:w-auto focus-visible:outline-2 focus-visible:outline-secondary"
             >
               Contact Me
             </motion.a>
